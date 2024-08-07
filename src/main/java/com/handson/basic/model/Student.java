@@ -1,7 +1,10 @@
 package com.handson.basic.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.handson.basic.util.Dates;
 import org.hibernate.validator.constraints.Length;
+import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -129,6 +132,11 @@ public class Student implements Serializable {
             return this;
         }
 
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+        @JsonProperty("createdAt")
+        public LocalDateTime calcCreatedAt() {
+            return Dates.atLocalTime(createdAt);
+        }
         public StudentBuilder createdAt(Date createdAt) {
             this.createdAt = createdAt;
             return this;
@@ -137,6 +145,76 @@ public class Student implements Serializable {
         public StudentBuilder fullname(String fullname) {
             this.fullname = fullname;
             return this;
+        }
+
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        @JsonProperty("birthDate")
+        public LocalDateTime calcBirthDate() {
+            return Dates.atLocalTime(birthDate);
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public Date getCreatedAt() {
+            return createdAt;
+        }
+
+        public void setCreatedAt(Date createdAt) {
+            this.createdAt = createdAt;
+        }
+
+        public String getFullname() {
+            return fullname;
+        }
+
+        public void setFullname(String fullname) {
+            this.fullname = fullname;
+        }
+
+        public Date getBirthDate() {
+            return birthDate;
+        }
+
+        public void setBirthDate(Date birthDate) {
+            this.birthDate = birthDate;
+        }
+
+        public Integer getSatScore() {
+            return satScore;
+        }
+
+        public void setSatScore(Integer satScore) {
+            this.satScore = satScore;
+        }
+
+        public Double getGraduationScore() {
+            return graduationScore;
+        }
+
+        public void setGraduationScore(Double graduationScore) {
+            this.graduationScore = graduationScore;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public String getProfilePicture() {
+            return profilePicture;
+        }
+
+        public void setProfilePicture(String profilePicture) {
+            this.profilePicture = profilePicture;
         }
 
         public StudentBuilder birthDate(Date birthDate) {
@@ -177,4 +255,5 @@ public class Student implements Serializable {
             return student;
         }
     }
+
 }
