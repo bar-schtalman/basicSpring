@@ -3,7 +3,7 @@
 /workspace.xml
 # Compiled class file
 *.class
-/postgres
+/postgresdata
 # Log file
 *.log
 
