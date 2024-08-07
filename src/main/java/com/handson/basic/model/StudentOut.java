@@ -5,16 +5,68 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.handson.basic.util.Dates;
 import org.joda.time.LocalDateTime;
-import javax.persistence.Id;
 
-import javax.persistence.Entity;
-import javax.persistence.SqlResultSetMapping;
+import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 @Entity
 @SqlResultSetMapping(name = "StudentOut")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StudentOut {
+
+    public Collection<StudentGrade> getStudentGrades() {
+        return studentGrades;
+    }
+
+    public void setStudentGrades(Collection<StudentGrade> studentGrades) {
+        this.studentGrades = studentGrades;
+    }
+
+    public void setCreatedat(Date createdat) {
+        this.createdat = createdat;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public Integer getSatscore() {
+        return satscore;
+    }
+
+    public void setSatscore(Integer satscore) {
+        this.satscore = satscore;
+    }
+
+    public Double getGraduationscore() {
+        return graduationscore;
+    }
+
+    public void setGraduationscore(Double graduationscore) {
+        this.graduationscore = graduationscore;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getProfilepicture() {
+        return profilepicture;
+    }
+
+    public void setProfilepicture(String profilepicture) {
+        this.profilepicture = profilepicture;
+    }
+
+    @OneToMany(mappedBy = "student", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private Collection<StudentGrade> studentGrades = new ArrayList<>();
 
     @Id
     private Long id;
