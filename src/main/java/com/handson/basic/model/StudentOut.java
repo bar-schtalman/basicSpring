@@ -3,6 +3,7 @@ package com.handson.basic.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.handson.basic.util.AWSService;
 import com.handson.basic.util.Dates;
 import org.joda.time.LocalDateTime;
 
@@ -82,6 +83,8 @@ public class StudentOut {
     private String fullname;
     private Date birthdate;
 
+    private Double avgscore;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @JsonProperty("birthdate")
     public LocalDateTime calcBirthDate() {
@@ -89,6 +92,21 @@ public class StudentOut {
     }
 
     private Integer satscore;
+
+    public static StudentOut of(Student student, AWSService awsService) {
+        StudentOut res = new StudentOut();
+        res.id = student.getId();
+        res.createdat = student.getCreatedAt();
+        res.fullname = student.getFullname();
+        res.birthdate = student.getBirthDate();
+        res.satscore = student.getSatScore();
+        res.graduationscore = student.getGraduationScore();
+        res.phone = student.getPhone();
+        res.profilepicture = awsService.generateLink(student.getProfilePicture());
+        res.avgscore = null;
+        return res;
+    }
+
     private Double graduationscore;
 
     private String phone;
@@ -123,6 +141,13 @@ public class StudentOut {
         this.id = id;
     }
 
+    public void setAvgscore(Double avgscore){
+        this.avgscore = avgscore;
+    }
+    public Double getAvgscore(){return avgscore; }
+
+
+
     public String getPhone() {
         return phone;
     }
@@ -130,4 +155,6 @@ public class StudentOut {
     public String getProfilePicture() {
         return profilepicture;
     }
+
+
 }

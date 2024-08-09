@@ -9,12 +9,15 @@ import com.handson.basic.model.StudentIn;
 import com.handson.basic.model.StudentOut;
 import com.handson.basic.model.StudentSortField;
 import com.handson.basic.repo.StudentService;
+import com.handson.basic.util.AWSService;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.EntityManager;
 import javax.validation.constraints.Min;
 import java.util.List;
@@ -140,6 +143,21 @@ public class StudentsController {
                 .itemClass(StudentOut.class)
                 .build().exec(em, om);
         return ResponseEntity.ok(res);
+    }
+
+    @Autowired
+    AWSService awsService;
+
+    @RequestMapping(value = "/{id}/image", method = RequestMethod.PUT)
+    public ResponseEntity<?> uploadStudentImage(@PathVariable Long id,  @RequestParam("image") MultipartFile image)
+    {
+        Optional<Student> dbStudent = studentService.findById(id);
+        if (dbStudent.isEmpty()) throw new RuntimeException("Student with id: " + id + " not found");
+        String bucketPath = "apps/niv/student-" +  id + ".png" ;
+        awsService.putInBucket(image, bucketPath);
+        dbStudent.get().setProfilePicture(bucketPath);
+        Student updatedStudent = studentService.save(dbStudent.get());
+        return new ResponseEntity<>(StudentOut.of(updatedStudent, awsService) , HttpStatus.OK);
     }
 
 }

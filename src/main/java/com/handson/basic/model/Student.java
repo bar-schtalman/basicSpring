@@ -34,6 +34,8 @@ public class Student implements Serializable {
 
     private Date birthDate;
 
+
+
     @Min(100)
     @Max(800)
     private Integer satScore;
@@ -254,6 +256,7 @@ public class Student implements Serializable {
             student.setGraduationScore(graduationScore);
             student.setPhone(phone);
             student.setProfilePicture(profilePicture);
+
             return student;
         }
     }
